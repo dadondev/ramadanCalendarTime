@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import getTime from "./functions/getTime.js";
+import obj from "./functions/getResponse.js";
 mongoose
   .connect("mongodb://127.0.0.1:27017/times")
   .then(() => {
@@ -21,14 +22,19 @@ const timeSchema = new mongoose.Schema({
 const Time = mongoose.model("times", timeSchema);
 
 app.get("/:id", (req, res) => {
-  res.write("hello");
+  res.write("You must correct request !!!");
   res.end();
 });
 
 app.get("/:region/:id", (req, res) => {
   const { region, id } = req.params;
   getTime(region, id, Time);
-  res.write("hello");
+  let err = obj("give");
+  if (typeof err !== "string") {
+    res.status(200).send(err);
+  } else {
+    res.status(400).send(err);
+  }
   res.end();
 });
 
